@@ -9,6 +9,8 @@ algorithm is modified to work in a different way. This proposed approach simply 
 not pick up least significant bits of pixel in a sequence but it intelligently selects pixel
 positions for embedding the secret message.
 
+Algorithm can be found in report.pdf
+
 
 Execution commands :
 
