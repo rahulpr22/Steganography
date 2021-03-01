@@ -3,8 +3,8 @@ import numpy as np
 import math,re
 import simpleaudio as sa
 
-def playAudio():
-    wave_obj = sa.WaveObject.from_wave_file("embedded.wav")
+def playAudio(audio):
+    wave_obj = sa.WaveObject.from_wave_file(audio)
     play_obj = wave_obj.play()
     play_obj.wait_done()
 
@@ -32,6 +32,7 @@ def writeAttachment(length):
 def encode(message):
     audio = wave.open("coverAudio.wav", mode='rb')
     data = bytearray(list(audio.readframes(audio.getnframes())))
+    #print(len(data))
     bits=msgToBinary(message)
     length=len(bits)
     print("Message length : ",length)
@@ -39,6 +40,7 @@ def encode(message):
     np.random.seed(len(bits))
     perm = np.random.permutation(len(bits))
     j=0 
+    #do a mask and or with the message bit
     for bit in bits:
         data[perm[j]] = (int(data[perm[j]]) & 254) | int(bit)
         j+=1
@@ -70,7 +72,7 @@ def decode():
 
 if __name__== "__main__":
     while(1):
-        print("\nChoose appropriate option: \n1.Encode\n2.Decode\n3.Play Embedded Audio\n4.exit")
+        print("\nChoose appropriate option: \n1.Encode\n2.Decode\n3.Play Embedded Audio\n4.Play Original audio\n5.exit")
         val = int(input("\nChoice:"))
         if val == 1:
             msg = input("\nEnter the secret message : ")
@@ -79,9 +81,13 @@ if __name__== "__main__":
             decode()
         elif val == 3:
             print("\nPlaying embedded.wav audio...")
-            playAudio()
+            playAudio("embedded.wav")
             print("\n Done !!")
         elif val == 4:
+            print("\nPlaying coverAudio.wav audio...")
+            playAudio("coverAudio.wav")
+            print("\n Done !!")
+        elif val == 5:
             print("\nExitting...")
             quit()
         else :
